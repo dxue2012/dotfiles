@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Dyland's vimrc file
 "
-" Last Modified: 11/01/13
+" Last Modified: 11/21/13
 " Sections: General, VIM user interface, Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use Vim settings, rather than Vi settings
@@ -22,6 +22,9 @@ Bundle 'gmarik/vundle'
 " Colors
 Bundle 'tir_black'
 Bundle 'peaksea'
+
+" Time Tracking
+Bundle 'wakatime/vim-wakatime'
 
 " Navigation and shortcuts
 Bundle 'scrooloose/nerdtree'
@@ -68,8 +71,6 @@ nmap <leader>w :w!<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Autowrap text when there are more than 72 characters in 1 line
-set tw=72
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 

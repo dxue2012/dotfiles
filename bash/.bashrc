@@ -12,3 +12,6 @@ export EDITOR=vim
 # Create aliases for commonly used commands
 alias ls="ls -GFp"
 alias lsd="ls -d1 */"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

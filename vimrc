@@ -22,6 +22,8 @@ Bundle 'gmarik/vundle'
 " Colors
 Bundle 'tir_black'
 Bundle 'peaksea'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'Lokaltog/vim-distinguished'
 
 " Time Tracking
 Bundle 'wakatime/vim-wakatime'
@@ -36,6 +38,14 @@ Bundle 'rstacruz/sparkup'
 Bundle 'majutsushi/tagbar'
 Bundle 'mozilla/doctorjs'
 Bundle 'git://git.code.sf.net/p/atp-vim/code'
+Bundle 'YankRing.vim'
+
+" Tab completion
+Bundle 'ervandew/supertab'
+
+" Note taking plugin
+Bundle 'xolox/vim-notes'
+Bundle 'xolox/vim-misc'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -76,6 +86,7 @@ set so=7
 
 " Turn on the Wild menu
 set wildmenu
+set wildmode=longest:full,full
 
 " Always show current position
 set ruler
@@ -133,6 +144,10 @@ set foldnestmax=10
 set nofoldenable
 set foldlevel=1
 
+" GUI options
+set guioptions+=lrb
+set guioptions-=lrb
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -143,13 +158,14 @@ let &t_Co=256
 " Switch syntax highlighting on
 syntax on
 
-set background=dark
-
 if has("gui_running")
-    colorscheme peaksea
+    colorscheme solarized
+    "colorscheme peaksea
 else
     colorscheme tir_black
 endif
+
+set background=dark
 
 " Set font according to system
 if has("mac") || has("macunix")
@@ -165,6 +181,18 @@ if has("gui_macvim")
     set fuoptions=maxvert,maxhorz
     au GUIEnter * set fullscreen
 endif
+
+" highlight the 73th column
+highlight ColorColumn  ctermbg=235 guibg=#2c2d27
+set colorcolumn=73
+
+" In Vim >= 7.3, also highlight columns 120+
+" if exists('+colorcolumn')
+"   let &colorcolumn="73,".join(range(120,320),",")
+" else
+"   " fallback for Vim < v7.3
+"   autocmd BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+" endif
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -217,6 +245,9 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+" Mapping for reloading vimrc
+nmap <leader>so :so %<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -242,32 +273,34 @@ map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
 " Mapping for normal copy and pasting on Mac
-vmap <C-c> y:call system("pbcopy", getreg("\""))<CR>
-nmap <C-v> :call setreg("\"",system("pbpaste"))<CR>p
+" vmap <C-c> y:call system("pbcopy", getreg("\""))<CR>
+" nmap <C-v> :call setreg("\"",system("pbpaste"))<CR>p
 
 " Mapping for tab completion
-function! Smart_TabComplete()
-    let line = getline('.')
-
-    let substr = strpart(line, -1, col('.')+1)
-    let substr = matchstr(substr, "[^ \t]*$")
-    if (strlen(substr)==0)
-        return "\<tab>"
-    endif
-
-    let has_period = match(substr, '\.') != -1
-    let has_slash = match(substr, '\/') != -1
-    if (!has_period && !has_slash)
-        return "\<C-X>\<C-P>"
-    elseif (has_slash)
-        return "\<C-X>\<C-O>"
-    endif
-endfunction
-
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+"function! Smart_TabComplete()
+"    let line = getline('.')
+"
+"    let substr = strpart(line, -1, col('.')+1)
+"    let substr = matchstr(substr, "[^ \t]*$")
+"    if (strlen(substr)==0)
+"        return "\<tab>"
+"    endif
+"
+"    let has_period = match(substr, '\.') != -1
+"    let has_slash = match(substr, '\/') != -1
+"    if (!has_period && !has_slash)
+"        return "\<C-X>\<C-P>"
+"    elseif (has_slash)
+"        return "\<C-X>\<C-O>"
+"    endif
+"endfunction
+"
+"inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 " Set omnicomplete
 set omnifunc=syntaxcomplete#Complete
+
+set completeopt=longest,menuone
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
@@ -285,6 +318,9 @@ map <leader>nf :NERDTreeFind<cr>
 
 " Tagbar
 nmap <leader>b :TagbarToggle<CR>
+
+" Notes
+:let g:notes_directories = ['~/Documents/Notes', '~/Dropbox/Shared Notes']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Language Specifics

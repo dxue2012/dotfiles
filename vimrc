@@ -31,21 +31,42 @@ Bundle 'wakatime/vim-wakatime'
 " Navigation and shortcuts
 Bundle 'scrooloose/nerdtree'
 Bundle 'tComment'
-Bundle 'ack.vim'
+Bundle 'mileszs/ack.vim'
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'rstacruz/sparkup'
+
 " Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
 Bundle 'majutsushi/tagbar'
 Bundle 'mozilla/doctorjs'
+Bundle 'tpope/vim-surround'
+Bundle 'matchit.zip'
+
+" This is latex too!
 Bundle 'git://git.code.sf.net/p/atp-vim/code'
+
+" Smart uage of yanking
 Bundle 'YankRing.vim'
 
 " Tab completion
 Bundle 'ervandew/supertab'
 
+" Tab completion for python
+Bundle 'davidhalter/jedi-vim'
+
 " Note taking plugin
 Bundle 'xolox/vim-notes'
 Bundle 'xolox/vim-misc'
+
+" Check syntax on save
+Bundle 'scrooloose/syntastic'
+
+" SnipMate
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+
+" Python style
+Bundle "hynek/vim-python-pep8-indent"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -60,10 +81,12 @@ set writebackup
 " Set working directory to current directory
 autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
 
+" Set working directory to current directory
+autocmd VimEnter * if !argc() | NERDTree | endif
+
 " Enable file type detection and do language-dependent indenting.
 " Actually this might belong to a separate section for filetypes
 filetype plugin indent on
-
 
 " Enable autoread when a file is changed from the outside
 " rarely used. Off by default
@@ -72,6 +95,8 @@ filetype plugin indent on
 " Set map leader to the more comfortable ','
 let mapleader=","
 let g:mapleader=","
+let maplocalleader=";"
+let g:maplocalleader=";"
 
 " Fast saving
 " Note nmap stands for normal mode mapping. Similarly vmap would be
@@ -145,8 +170,9 @@ set nofoldenable
 set foldlevel=1
 
 " GUI options
-set guioptions+=lrb
-set guioptions-=lrb
+set guioptions-=r
+set guioptions-=L
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -216,6 +242,9 @@ set smartindent
 
 " Wrap lines
 set wrap
+
+" Comments
+set formatoptions+=cro
 
 " Visual mode pressing * or # searches for the current selection
 " Idea from Awesome Vimrc by Amir Salihefendic
@@ -326,5 +355,45 @@ nmap <leader>b :TagbarToggle<CR>
 " => Language Specifics
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" HTML
+let g:html_indent_inctags = "html,body,head,tbody" 
+
 " JSON
 autocmd BufNewFile,BufRead *.json set ft=javascript
+
+"LaTeX
+" Mapping for compiling. don't know why the default keys don't work
+if has("gui_running")
+  nmap <leader>ff :Latexmk<CR>:LatexmkClean<CR>
+else
+  nmap <leader>ff :Tex<CR>
+endif
+
+" ATP settings
+let g:atp_ProgressBar=1
+let g:atp_status_notification=1
+let g:atp_DebugModeCmdHeight=&cmdheight
+let b:atp_TexCompiler="pdflatex"
+let b:atp_TexFlavor="tex"
+
+" for Greek letters and some math commands
+let g:atp_imap_leader_1 = '#'
+
+" for font commands
+let g:atp_imap_leader_2 = "##"
+
+" for environments
+let g:atp_imap_leader_3 = "]"
+let g:atp_imap_leader_4 = "["
+
+let g:atp_imap_over_leader = "'"
+let g:atp_map_forward_motion_leader = ">"
+let g:atp_map_backward_motion_leader = "<"
+
+"  Syntastic
+let g:syntastic_auto_jump = 1
+let g:syntastic_ignore_files = ['.*\.tex']
+
+" Supertab
+let g:SuperTabMappingForward = '<C-Space>'
+let g:SuperTabMappingBackward = '<C-S-Space>'

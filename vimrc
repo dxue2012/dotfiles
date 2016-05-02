@@ -25,14 +25,11 @@ Bundle 'peaksea'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'Lokaltog/vim-distinguished'
 
-" Time Tracking
-Bundle 'wakatime/vim-wakatime'
-
 " Navigation and shortcuts
 Bundle 'scrooloose/nerdtree'
 Bundle 'tComment'
 Bundle 'mileszs/ack.vim'
-Bundle 'git://git.wincent.com/command-t.git'
+" Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'rstacruz/sparkup'
 
 " Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
@@ -48,10 +45,16 @@ Bundle 'git://git.code.sf.net/p/atp-vim/code'
 Bundle 'YankRing.vim'
 
 " Tab completion
-Bundle 'ervandew/supertab'
+"" Bundle 'ervandew/supertab'
 
-" Tab completion for python
-Bundle 'davidhalter/jedi-vim'
+"neocomplete
+"" Bundle 'Shougo/neocomplete.vim'
+"" 
+"" " Tab completion for python
+"" Bundle 'davidhalter/jedi-vim'
+
+" Better autocomplete--YouCompleteMe
+Bundle 'Valloric/YouCompleteMe'
 
 " Note taking plugin
 Bundle 'xolox/vim-notes'
@@ -67,6 +70,35 @@ Bundle "garbas/vim-snipmate"
 
 " Python style
 Bundle "hynek/vim-python-pep8-indent"
+
+" TypeScript Support
+Bundle "leafgarland/typescript-vim"
+
+" JavaScript
+Bundle "pangloss/vim-javascript"
+Bundle "othree/javascript-libraries-syntax.vim"
+
+" Less
+Bundle 'groenewege/vim-less'
+
+" CoqIDE
+Bundle 'CoqIDE'
+Bundle 'jvoorhis/coq.vim'
+
+" Coquille dependency
+Bundle 'def-lkb/vimbufsync'
+
+" Coquille
+Bundle 'the-lambda-church/coquille'
+
+" Wakatime
+Bundle 'wakatime/vim-wakatime'
+
+" GLSL
+Bundle 'tikhomirov/vim-glsl'
+
+" Lusty
+Bundle 'sjbach/lusty'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -90,7 +122,7 @@ filetype plugin indent on
 
 " Enable autoread when a file is changed from the outside
 " rarely used. Off by default
-" set autoread
+set autoread
 
 " Set map leader to the more comfortable ','
 let mapleader=","
@@ -141,6 +173,9 @@ set smartcase
 " Highlight search results
 set hlsearch
 
+" no swap please
+setlocal noswapfile
+
 " I don't understand the following commands work,
 " but apparently they are good to keep
 set incsearch
@@ -161,7 +196,8 @@ set tm=500
 set foldcolumn=1
 
 " Display line number
-set nu
+set number
+" set relativenumber
 
 " Folding settings
 set foldmethod=indent
@@ -172,7 +208,6 @@ set foldlevel=1
 " GUI options
 set guioptions-=r
 set guioptions-=L
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -188,14 +223,15 @@ if has("gui_running")
     colorscheme solarized
     "colorscheme peaksea
 else
-    colorscheme tir_black
+    colorscheme solarized
+    "colorscheme tir_black
 endif
 
 set background=dark
 
 " Set font according to system
 if has("mac") || has("macunix")
-    set gfn=Menlo:h14
+    set gfn=Menlo:h16
     set shell=/bin/bash
 elseif has("linux")
     set gfn=Monospace\ 10
@@ -210,7 +246,7 @@ endif
 
 " highlight the 73th column
 highlight ColorColumn  ctermbg=235 guibg=#2c2d27
-set colorcolumn=73
+set colorcolumn=80
 
 " In Vim >= 7.3, also highlight columns 120+
 " if exists('+colorcolumn')
@@ -251,6 +287,9 @@ set formatoptions+=cro
 vnoremap <silent> * :call VisualSelection('f', '')<CR>
 vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
+" highlight suspicious spaces
+set listchars=nbsp:¬,eol:¶,tab:>-,extends:»,precedes:«,trail:•
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, windows, and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -262,8 +301,7 @@ map k gk
 map <silent> <leader><CR> :noh<CR>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>t<leader> :tabnext
+map <leader>tt :tabnext<CR>
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
@@ -305,39 +343,37 @@ map <leader>p :cp<cr>
 " vmap <C-c> y:call system("pbcopy", getreg("\""))<CR>
 " nmap <C-v> :call setreg("\"",system("pbpaste"))<CR>p
 
-" Mapping for tab completion
-"function! Smart_TabComplete()
-"    let line = getline('.')
-"
-"    let substr = strpart(line, -1, col('.')+1)
-"    let substr = matchstr(substr, "[^ \t]*$")
-"    if (strlen(substr)==0)
-"        return "\<tab>"
-"    endif
-"
-"    let has_period = match(substr, '\.') != -1
-"    let has_slash = match(substr, '\/') != -1
-"    if (!has_period && !has_slash)
-"        return "\<C-X>\<C-P>"
-"    elseif (has_slash)
-"        return "\<C-X>\<C-O>"
-"    endif
-"endfunction
-"
-"inoremap <tab> <c-r>=Smart_TabComplete()<CR>
-
 " Set omnicomplete
 set omnifunc=syntaxcomplete#Complete
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
 
 set completeopt=longest,menuone
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------
+" Solarized Colorscheme Config
+" ------------------------------------------------------------------
+let g:solarized_contrast="low"    "default value is normal
+let g:solarized_visibility="high"    "default value is normal
+let g:solarized_hitrail=1    "default value is 0
+" ------------------------------------------------------------------
+
 " NERDTree
 map <leader>nn :NERDTreeToggle<cr>
 map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
 
 " tComment
 
@@ -349,7 +385,7 @@ map <leader>nf :NERDTreeFind<cr>
 nmap <leader>b :TagbarToggle<CR>
 
 " Notes
-:let g:notes_directories = ['~/Documents/Notes', '~/Dropbox/Shared Notes']
+let g:notes_directories = ['~/Documents/Notes', '~/Dropbox/Shared Notes']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Language Specifics
@@ -364,7 +400,7 @@ autocmd BufNewFile,BufRead *.json set ft=javascript
 "LaTeX
 " Mapping for compiling. don't know why the default keys don't work
 if has("gui_running")
-  nmap <leader>ff :Latexmk<CR>:LatexmkClean<CR>
+  nmap <leader>ff :Latexmk<CR>
 else
   nmap <leader>ff :Tex<CR>
 endif
@@ -391,9 +427,37 @@ let g:atp_map_forward_motion_leader = ">"
 let g:atp_map_backward_motion_leader = "<"
 
 "  Syntastic
-let g:syntastic_auto_jump = 1
-let g:syntastic_ignore_files = ['.*\.tex']
+let g:syntastic_auto_jump = 0
+let g:syntastic_ignore_files = ['.*\.tex', '.*\.html']
+let g:syntastic_ocaml_checkers = ['merlin']
+let g:syntastic_typescript_tsc_args='-t ES5 -m AMD'
+
+" JavaScript
+let g:used_javascript_libs = 'angularjs,jasmine'
+
+" Less
+" nnoremap <Leader>m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 " Supertab
-let g:SuperTabMappingForward = '<C-Space>'
-let g:SuperTabMappingBackward = '<C-S-Space>'
+"let g:SuperTabMappingForward = '<C-Space>'
+"let g:SuperTabMappingBackward = '<C-S-Space>'
+let g:SuperTabDefaultCompletionType = "<c-n>"
+au FileType ocaml call SuperTabSetDefaultCompletionType("<c-x><c-o>")
+au FileType ocaml setlocal shiftwidth=2 tabstop=2
+nnoremap <Leader>m :MerlinLocate<CR>
+
+" CoqIDE
+let g:CoqIDEDefaultMap = 1
+
+" Coquille
+" au FileType coq call coquille#MyMapping()
+" let g:coquille_auto_move = "true"
+
+" Ocaml
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+""" Highlight enclosing term
+hi EnclosingExpr ctermbg=17 guibg=LightGreen
+nnoremap <LocalLeader>ge :GrowEnclosing<CR>
+nnoremap <LocalLeader>se :ShrinkEnclosing<CR>

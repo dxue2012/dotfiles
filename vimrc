@@ -441,9 +441,9 @@ let g:used_javascript_libs = 'angularjs,jasmine'
 " Supertab
 "let g:SuperTabMappingForward = '<C-Space>'
 "let g:SuperTabMappingBackward = '<C-S-Space>'
-let g:SuperTabDefaultCompletionType = "<c-n>"
-au FileType ocaml call SuperTabSetDefaultCompletionType("<c-x><c-o>")
-au FileType ocaml setlocal shiftwidth=2 tabstop=2
+"let g:SuperTabDefaultCompletionType = "<c-n>"
+"au FileType ocaml call SuperTabSetDefaultCompletionType("<c-x><c-o>")
+"au FileType ocaml setlocal shiftwidth=2 tabstop=2
 nnoremap <Leader>m :MerlinLocate<CR>
 
 " CoqIDE

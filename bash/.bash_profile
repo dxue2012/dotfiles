@@ -30,5 +30,15 @@ export PATH=$PATH:/usr/local/sbin
 
 export PATH=$PATH:/Library/TeX/Root/bin/x86_64-darwin
 
+CAML_LD_LIBRARY_PATH="/Users/dylandxue2012/.opam/system/lib/stublibs:/usr/local/lib/ocaml/stublibs"; export CAML_LD_LIBRARY_PATH;
+OPAMUTF8MSGS="1"; export OPAMUTF8MSGS;
+MANPATH="/Users/dylandxue2012/.opam/system/man:"; export MANPATH;
+MAKELEVEL=""; export MAKELEVEL;
+MAKEFLAGS=""; export MAKEFLAGS;
+PERL5LIB="/Users/dylandxue2012/.opam/system/lib/perl5"; export PERL5LIB;
+OCAML_TOPLEVEL_PATH="/Users/dylandxue2012/.opam/system/lib/toplevel"; export OCAML_TOPLEVEL_PATH;
+
+export PATH=/Users/dylandxue2012/.opam/system/bin:$PATH
+
 # Load Bash It
 source $BASH_IT/bash_it.sh
